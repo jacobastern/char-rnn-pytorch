@@ -1,72 +1,81 @@
-# Ubuntu 18.04 Python3 with CUDA 10 and the following:
-#  - Installs tf-nightly-gpu-2.0-preview
-#  - Installs requirements.txt for tensorflow/models
+FROM nvidia/cuda:10.1-cudnn7-devel-ubuntu18.04
 
-FROM nvidia/cuda:10.0-base-ubuntu18.04 as base
+ARG DEBIAN_FRONTEND=noninteractive
 
-# Pick up some TF dependencies
+ENV NVIDIA_VISIBLE_DEVICES all
+ENV NVIDIA_DRIVER_CAPABILITIES compute,utility
+
+# install build tools & python
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        build-essential \
-        cuda-command-line-tools-10-0 \
-        cuda-cublas-10-0 \
-        cuda-cufft-10-0 \
-        cuda-curand-10-0 \
-        cuda-cusolver-10-0 \
-        cuda-cusparse-10-0 \
-        libcudnn7=7.4.1.5-1+cuda10.0 \
-        libfreetype6-dev \
-        libhdf5-serial-dev \
-        libzmq3-dev \
-        libpng-dev \
-        pkg-config \
-        software-properties-common \
-        unzip \
-        lsb-core \
-        curl
+    ca-certificates \
+    libjpeg-dev \
+    libpng-dev \
+    build-essential \
+    cmake \
+    curl \
+    g++ \
+    git \
+    graphicsmagick \
+    libatlas-base-dev \
+    libavcodec-dev \
+    libavformat-dev \
+    libboost-all-dev \
+    libfreetype6-dev \
+    libgraphicsmagick1-dev \
+    libgtk2.0-dev \
+    libjpeg-dev \
+    liblapack-dev \
+    libpng-dev \
+    libswscale-dev \
+    libzmq3-dev \
+    pkg-config \
+    protobuf-compiler \
+    python3 \
+    python3-dev \
+    python3-pip \
+    python3-tk \
+    python3-lxml \
+    python3-setuptools \
+    rsync \
+    software-properties-common \
+    unzip \
+    wget \
+    vim \
+    zip
 
-RUN apt-get update && \
-        apt-get install nvinfer-runtime-trt-repo-ubuntu1804-5.0.2-ga-cuda10.0 \
-        && apt-get update \
-        && apt-get install -y --no-install-recommends libnvinfer5=5.0.2-1+cuda10.0 \
-        && apt-get clean
+# install cleanup
+RUN apt-get -qq update && apt-get -qq clean \
+    && rm -rf /var/lib/apt/lists/*
 
-# For CUDA profiling, TensorFlow requires CUPTI.
-ENV LD_LIBRARY_PATH /usr/local/cuda/extras/CUPTI/lib64:$LD_LIBRARY_PATH
+# update python installers
+RUN pip3 install pip --upgrade
 
-# See http://bugs.python.org/issue19846
-ENV LANG C.UTF-8
+# install python dependencies
+RUN pip3 --no-cache-dir install \
+    argparse \
+    opencv-python \
+    sklearn \
+    cython \
+    ipykernel \
+    jupyter \
+    matplotlib \
+    numpy \
+    seaborn \
+    pprint \
+    requests \
+    scipy \
+    setuptools \    
+    torchvision \
+    xgboost \
+    h5py \
+    torchtext \ 
+    unidecode \
+    torch==1.1.0 -f https://download.pytorch.org/whl/cu100/stable \
+    && python3 -m ipykernel.kernelspec
 
-# Add google-cloud-sdk to the source list
-RUN echo "deb http://packages.cloud.google.com/apt cloud-sdk-$(lsb_release -c -s) main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
-RUN curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+#RUN TORCH_CUDA_ARCH_LIST="3.5 5.2 6.0 6.1 7.0+PTX" TORCH_NVCC_FLAGS="-Xfatbin -compress-all" \
+#    CMAKE_PREFIX_PATH="$(dirname $(which conda))/../"
 
-# Install extras needed by most models
-RUN apt-get update && apt-get install -y --no-install-recommends \
-      git \
-      build-essential \
-      ca-certificates \
-      wget \
-      htop \
-      zip \
-      google-cloud-sdk
+ENTRYPOINT ["/bin/bash"]
 
-# Install / update Python and Python3
-RUN apt-get install -y --no-install-recommends \
-      python3 \
-      python3-dev \
-      python3-pip \
-      python3-setuptools \
-      python3-venv
-
-
-# Setup Python3 environment
-RUN pip3 install --upgrade pip==9.0.1
-# setuptools upgraded to fix install requirements from model garden.
-RUN pip3 install --upgrade setuptools google-api-python-client pyyaml google-cloud google-cloud-bigquery
-RUN pip3 install wheel absl-py
-RUN pip3 install --upgrade --force-reinstall tf-nightly-gpu-2.0-preview
-RUN pip3 install numpy
-RUN pip3 install matplotlib
-
-RUN curl https://raw.githubusercontent.com/tensorflow/models/master/official/requirements.txt > /tmp/requirements.txt
-RUN pip3 install -r /tmp/requirements.txt
+WORKDIR /code
