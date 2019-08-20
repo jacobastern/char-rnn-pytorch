@@ -1,5 +1,5 @@
 # Character RNN - PyTorch
-![alt text](gif.path)
+![alt text](char-hamilton.gif)
 
 # Usage
 The easiest way to run this code is in a docker container. The only requirements are [Docker](https://docs.docker.com/install/) and [nvidia-docker](https://github.com/NVIDIA/nvidia-docker).
@@ -22,11 +22,13 @@ nvidia-docker run -it --name char-rnn --rm -v $(pwd):/code deep-learning-pytorch
 ```
 Then run the following command in the docker container for a basic demo:
 
-`python3 style_transfer_main`
+`python3 char_rnn_main`
 
 To see additional options run: 
 
-`python3 style_transfer_main --help`
+`python3 char_rnn_main --help`
+
+(hint: look here ^ to see how to try a new dataset!)
 
 ### Option 2 - To run the Jupyter Notebook demo:
 If you want to run the jupyter notebook, it requires a couple of modifications.
