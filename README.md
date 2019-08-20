@@ -1,5 +1,5 @@
 # Character RNN - PyTorch
-![alt text](char-hamilton.gif)
+![alt text](demos/char-hamilton.gif)
 
 # Usage
 The easiest way to run this code is in a docker container. The only requirements are [Docker](https://docs.docker.com/install/) and [nvidia-docker](https://github.com/NVIDIA/nvidia-docker).
