@@ -1,5 +1,6 @@
 # Character RNN - PyTorch
 Have you ever wondered what the third act of "Hamilton" might sound like? Here's a guess :)
+
 ![alt text](demos/char-hamilton.gif)
 
 This package trains a basic character-level language model, implemented as an RNN with a GRU (gated recurrent unit) as its primary building block. Feel free to try a demo with another of the artists in the `/data` folder!
