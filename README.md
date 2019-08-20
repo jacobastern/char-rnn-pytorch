@@ -1,5 +1,5 @@
-# Style Transfer - Tensorflow 2.0
-![alt text](https://github.com/jastern33/style-transfer-tensorflow/raw/master/demos/kandinsky-turtle.png)
+# Character RNN - PyTorch
+![alt text](gif.path)
 
 # Usage
 The easiest way to run this code is in a docker container. The only requirements are [Docker](https://docs.docker.com/install/) and [nvidia-docker](https://github.com/NVIDIA/nvidia-docker).

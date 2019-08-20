@@ -69,7 +69,6 @@ RUN pip3 --no-cache-dir install \
     xgboost \
     h5py \
     torchtext \ 
-    unidecode \
     torch==1.1.0 -f https://download.pytorch.org/whl/cu100/stable \
     && python3 -m ipykernel.kernelspec
 
