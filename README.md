@@ -11,7 +11,7 @@ The easiest way to run this code is in a docker container. The only requirements
 ### Option 1 - Basic Usage
 Clone the repo:
 ```bash
-git clone https://github.com/jastern33/char-rnn-pytorch
+git clone https://github.com/jastern33/char-rnn-pytorch.git
 cd char-rnn-pytorch
 ```
 Build the docker image (takes awhile): 
