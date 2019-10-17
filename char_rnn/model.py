@@ -61,7 +61,6 @@ class RNN(nn.Module):
         # The first argument is self.hidden_size because we've embedded the input to be the same size as the hidden_state
         self.gru = GRU(self.hidden_size, self.hidden_size)
         self.to_output_size = nn.Linear(self.hidden_size, self.output_size)
-        self.softmax = nn.LogSoftmax(dim=1) #dim=1
 
     def forward(self, input_char, hidden_state):
         """A forward pass through the RNN.
